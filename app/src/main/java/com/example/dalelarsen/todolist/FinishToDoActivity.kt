@@ -1,5 +1,6 @@
 package com.example.dalelarsen.todolist
 
+import android.graphics.Typeface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -20,9 +21,12 @@ class FinishToDoActivity : AppCompatActivity() {
         println(toDoItemId)
 
         val realm = Realm.getDefaultInstance()
-        val toDoItem = realm.where(ToDoItem::class.java).equalTo("id", toDoItemId).findFirst()
+        val toDoItem = realm.where(ToDoItem::class.java).equalTo("id", toDoItemId).findFirst()!!
         val textView = findViewById<TextView>(R.id.toDoName)
         textView.text = toDoItem?.name
+        if (toDoItem.important) {
+            textView.setTypeface(Typeface.DEFAULT_BOLD)
+        }
         val completeButton = findViewById<Button>(R.id.completeButton)
 
         completeButton.setOnClickListener {

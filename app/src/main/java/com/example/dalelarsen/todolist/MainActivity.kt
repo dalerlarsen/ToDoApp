@@ -1,13 +1,15 @@
 package com.example.dalelarsen.todolist
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.TextView
 import io.realm.Realm
 import io.realm.RealmQuery
 
@@ -58,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, results)
+        val adapter = ToDoAdapter(this, android.R.layout.simple_list_item_1, results)
         listView.adapter = adapter
     }
 
@@ -76,5 +78,22 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+}
+
+class ToDoAdapter(context: Context?, resource: Int, objects: MutableList<ToDoItem>?) : ArrayAdapter<ToDoItem>(context, resource, objects) {
+    override fun getCount(): Int {
+        return super.getCount()
+    }
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val toDoView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false) as TextView
+        val toDoItem = getItem(position)
+        toDoView.text = toDoItem.name
+        if (toDoItem.important) {
+            toDoView.setTypeface(Typeface.DEFAULT_BOLD)
+        }
+        return toDoView
     }
 }
